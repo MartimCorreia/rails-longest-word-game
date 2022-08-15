@@ -14,28 +14,24 @@ class GamesController < ApplicationController
   def score
     @answer = ''
     @word = params[:answer]
-    if can_form?(@word)
-      case @word
-        when dictionary?(@word)
-          @answer = "Congratulations! #{@word.upcase} is a valid English word"
-        else
-          @answer = "#{@word.upcase} not an english word"
-      end
+    if can_form?(@word) && dictionary?(@word)
+      @answer = "Congratulations! #{@word.upcase} is a valid English word"
+    elsif !dictionary?(@word)
+      @answer = "#{@word.upcase} not an english word"
     else
       @answer = "Sorry but #{@word.upcase} can't be built out of #{params[:grid]}"
     end
   end
 
   def can_form?(word)
-    # @valid_word = ''
-    # word_to_array = word.chars
-    # @upcase_array = word_to_array.map { |letter| letter.upcase }
-    @word.chars.each do |letter|
-      @valid = params[:grid].include?(letter)
-     end
+    @valid_word = false
+    @counter = 0
+    word.chars.each do |letter|
+      @counter += 1 if params[:grid].include?(letter.upcase) == true
+      @valid_word = true if @counter == word.size
+    end
+    @valid_word
   end
-
-
 
   def dictionary?(word)
     url = "https://wagon-dictionary.herokuapp.com/#{word}"
