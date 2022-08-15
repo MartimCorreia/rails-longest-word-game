@@ -1,0 +1,12 @@
+<h1>New game</h1>
+<h2>Here is your grid:</h2>
+ <%=@game_grid%>
+ <form action="/result" method="post" data-turbo="false">
+ <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+ <%= hidden_field_tag :grid, @game_grid%>
+ <%= hidden_field_tag :grid1, @grid%>
+
+ <p>What's the longest word you can find?</p>
+  <input type="text" class="form-control" name="answer" placeholder="Type your word">
+  <button class="btn btn-default">Play</button>
+</form>
